@@ -31,7 +31,7 @@
 Dfps::Dfps() {}
 
 Dfps::~Dfps() {}
-
+using namespace std;
 
 void Dfps::Start(void) {
     SetSelfSchedHint();
