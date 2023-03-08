@@ -32,9 +32,6 @@
 
 constexpr char PROC_NAME[] = "dfps";
 constexpr char AUTHOR[] = "Matt Yang (yccy@outlook.com)";
-constexpr char HELP_DESC[] =
-    "Dynamic screen refresh rate controller for Android 10+. Details see https://github.com/yc9559/dfps.\n"
-    "Usage: dfps [-o log_file] config_file";
 constexpr char VERSION[] = "v1(23.01.15)";
 constexpr int TERM_SIG = SIGUSR1;
 

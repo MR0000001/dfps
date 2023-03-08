@@ -13,7 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include <iostream>
+#include <memory>
 
+
+#include "utils/misc.h"
 #include "dfps.h"
 #include "modules/cgroup_listener.h"
 #include "modules/dynamic_fps.h"
