@@ -45,10 +45,10 @@ void Dfps::Start(void) {
         if(strstr(buffer.data(), "KERNELORDER")){
             cout << "DMESG-W: " << buffer.data() << endl;
             if(strstr(buffer.data(), "SMARTHZH")){
-                SysPeakRefreshRate(120, true);
+                SysPeakRefreshRate("120", true);
             }
             if(strstr(buffer.data(), "SMARTHZL")){
-                SysPeakRefreshRate(60, true);
+                SysPeakRefreshRate("60", true);
             }
         }
     }
