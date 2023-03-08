@@ -21,29 +21,34 @@
 #include "modules/offscreen_monitor.h"
 #include "modules/topapp_monitor.h"
 #include "utils/sched_ctrl.h"
+#include "utils/misc_android.h"
 #include <spdlog/spdlog.h>
 
 Dfps::Dfps() {}
 
 Dfps::~Dfps() {}
 
-void Dfps::Load(const std::string &configPath, const std::string &notifyPath) {
-    configPath_ = configPath;
-    notifyPath_ = notifyPath;
-}
 
 void Dfps::Start(void) {
     SetSelfSchedHint();
 
-    modules_.emplace_back(std::make_unique<InputListener>());
-    modules_.emplace_back(std::make_unique<CgroupListener>());
-    modules_.emplace_back(std::make_unique<TopappMonitor>());
-    modules_.emplace_back(std::make_unique<OffscreenMonitor>());
-    modules_.emplace_back(std::make_unique<DynamicFps>(configPath_, notifyPath_));
+    unique_ptr<FILE, decltype(&pclose)> pipe(popen("dmesg -w", "r"), pclose);
+    if (!pipe)
+        throw runtime_error("popen failed");
 
-    for (const auto &m : modules_) {
-        m->Start();
+    array<char, 4096> buffer;
+    while (fgets(buffer.data(), buffer.size(), pipe.get())){
+        if(strstr(buffer.data(), "KERNELORDER")){
+            cout << "DMESG-W: " << buffer.data() << endl;
+            if(strstr(buffer.data(), "SMARTHZH")){
+                SysPeakRefreshRate(120, true);
+            }
+            if(strstr(buffer.data(), "SMARTHZL")){
+                SysPeakRefreshRate(60, true);
+            }
+        }
     }
+
     SPDLOG_INFO("Dfps is running");
 }
 

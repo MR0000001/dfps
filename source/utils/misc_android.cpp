@@ -237,6 +237,7 @@ void SyncCallSurfaceflingerBackdoor(const char *code, const char *hz) {
 
 void SysPeakRefreshRate(const std::string &hz, bool force) {
     CallSettingsPut("system", "peak_refresh_rate", hz.c_str());
+    CallSettingsPut("system", "preferred_refresh_rate", hz.c_str());
     CallSettingsPut("system", "min_refresh_rate", hz.c_str());
     CallSettingsPut("system", "miui_refresh_rate", hz.c_str());
     CallSettingsPut("secure", "miui_refresh_rate", hz.c_str());

@@ -77,7 +77,6 @@ void PrintTombstone(int pid) {
 }
 
 void AppMainMayThrow(void) {
-    dfps.Load(configFile, notifyFile);
     dfps.Start();
     for (;;) {
         Sleep(UINT32_MAX);
@@ -170,55 +169,7 @@ void Daemon(void) {
     }
 }
 
-void PrintHelp(void) { std::cout << std::endl << HELP_DESC << std::endl; }
-
-void ParseOpt(int argc, char **argv) {
-    static const char opt_string[] = "ho:n:";
-    static const struct option long_opts[] = {
-        {"help", no_argument, NULL, 'h'},
-        {"outfile", required_argument, NULL, 'o'},
-        {"notify", required_argument, NULL, 'n'},
-        {NULL, 0, 0, 0},
-    };
-    int opt;
-    while ((opt = getopt_long(argc, argv, opt_string, long_opts, NULL)) != -1) {
-        switch (opt) {
-            case 'h':
-                PrintHelp();
-                exit(EXIT_SUCCESS);
-                break;
-            case 'o':
-                logFile = std::string(optarg);
-                remove(logFile.c_str());
-                break;
-            case 'n':
-                notifyFile = std::string(optarg);
-                break;
-            default:
-                PrintHelp();
-                exit(EXIT_FAILURE);
-                break;
-        }
-    }
-    int len = argc - optind;
-    if (len < 1) {
-        SPDLOG_ERROR("Config file not specified");
-        exit(EXIT_FAILURE);
-    } else {
-        configFile = argv[optind];
-        if (access(configFile.c_str(), R_OK) != 0) {
-            SPDLOG_ERROR("Config file not found");
-            exit(EXIT_FAILURE);
-        }
-    }
-}
-
 int main(int argc, char **argv) {
-    InitLogger();
-    InitArgv(argc, argv);
-    ParseOpt(argc, argv);
-    InitLogger();
-
     pid_t pid = fork();
     if (pid == 0) {
         setsid();
