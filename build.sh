@@ -18,6 +18,7 @@
 # stop on error
 set -e
 
+ANDROID_NDK="/home/demo/Desktop/testing/android-ndk-r25c"
 TOOLCHAIN_PREBUILT="$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86_64"
 TOOLCHAIN_BIN="$TOOLCHAIN_PREBUILT/bin"
 BASEDIR="$(dirname $(readlink -f "$0"))"
